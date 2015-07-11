@@ -1,4 +1,5 @@
 #
+import datetime
 
 commands = []
 
@@ -25,3 +26,25 @@ def bdlist(bot, user, channel, msg):
             out = "{0} | {1} | {2}".format(row[0], row[1], row[2])
             bot.msg(channel, out)
 commands.append(bdlist)
+
+def bdadd(bot, user, channel, msg):
+    if msg.startswith('+bd add'):
+        # process input
+        date_str = msg.split(' ')[2]
+        date_obj = datetime.date(*map(int,date_str.split('-')))
+        dumper  = msg.split(' ')[3]
+        topic = " ".join(msg.split(' ')[3:])
+        bot.msg(channel, "Addding {0}, {1}, {2}".format(date_str, dumper, topic))
+
+        # sanitize input
+
+        #date_s = (date,)
+        safe = (date_obj, dumper, topic)
+
+#c.execute('SELECT * FROM stocks WHERE symbol=?', t)
+        db = bot.factory.db.cursor()
+        #dumps = db.execute("SELECT * FROM main.braindumps")
+        db.execute('INSERT INTO main.braindumps VALUES (?, ?, ?)', safe)
+        bot.factory.db.commit()
+
+commands.append(bdadd)
