@@ -36,7 +36,7 @@ import yaml
 import sqlite3
 
 # tonkon imports
-import tonkon.command_handler
+import tonkon
 
 
 class MessageLogger:
@@ -96,9 +96,8 @@ class LogBot(irc.IRCClient):
             self.msg(user, msg)
             return
 
-        # Otherwise check to see if it is a message directed at me
-        if msg.startswith(self.nickname + ":"):
-            tonkon.command_handler(self, user, channel, msg)
+        # Otherwise punt to the command handler
+        tonkon.command_handler(self, user, channel, msg)
 
     def action(self, user, channel, msg):
         """This will get called when the bot sees someone do an action."""

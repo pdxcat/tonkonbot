@@ -2,3 +2,7 @@ venv*
 *.pyc
 *.swp
 *.swo
+sqlite.db
+example.db
+config.yaml
+logs/*
