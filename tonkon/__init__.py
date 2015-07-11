@@ -30,16 +30,15 @@ commands.append(bdlist)
 def bdadd(bot, user, channel, msg):
     if msg.startswith('+bd add'):
         # process input
-        date_str = msg.split(' ')[2]
-        date_obj = datetime.date(*map(int,date_str.split('-')))
+        date = msg.split(' ')[2]
         dumper  = msg.split(' ')[3]
         topic = " ".join(msg.split(' ')[3:])
-        bot.msg(channel, "Addding {0}, {1}, {2}".format(date_str, dumper, topic))
+        bot.msg(channel, "Addding {0}, {1}, {2}".format(date, dumper, topic))
 
         # sanitize input
 
         #date_s = (date,)
-        safe = (date_obj, dumper, topic)
+        safe = (date, dumper, topic)
 
         db = bot.factory.db.cursor()
         #dumps = db.execute("SELECT * FROM main.braindumps")
@@ -51,16 +50,15 @@ commands.append(bdadd)
 def bdrm(bot, user, channel, msg):
     if msg.startswith('+bd rm'):
         # process input
-        date_str = msg.split(' ')[2]
-        date_obj = datetime.date(*map(int,date_str.split('-')))
+        date = msg.split(' ')[2]
 
         # sanitize input
         #date_s = (date,)
-        safe = (date_obj)
+        safe = (date,)
 
         db = bot.factory.db.cursor()
         #dumps = db.execute("SELECT * FROM main.braindumps")
-        db.execute('DELETE FROM main.braindumps WHERE date = ?', safe)
+        db.execute('DELETE FROM main.braindumps WHERE date=?', safe)
         bot.factory.db.commit()
 
 commands.append(bdrm)
