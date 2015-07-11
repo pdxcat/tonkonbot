@@ -130,9 +130,10 @@ class LogBotFactory(protocol.ClientFactory):
     A new protocol instance will be created each time we connect to the server.
     """
 
-    def __init__(self, channel, key):
+    def __init__(self, channel, key, db):
         self.channel = channel
         self.key = key
+        self.db = db
         self.filename = "logs/{0}".format(channel)
 
     def buildProtocol(self, addr):
@@ -192,7 +193,7 @@ if __name__ == '__main__':
 
 
     # create factory protocol and application
-    f = LogBotFactory(config['channel'], config['key'])
+    f = LogBotFactory(config['channel'], config['key'], db=conn)
 
     # connect factory to this host and port
     reactor.connectSSL(config['network'],config['port'], f, ssl.ClientContextFactory())
