@@ -41,10 +41,26 @@ def bdadd(bot, user, channel, msg):
         #date_s = (date,)
         safe = (date_obj, dumper, topic)
 
-#c.execute('SELECT * FROM stocks WHERE symbol=?', t)
         db = bot.factory.db.cursor()
         #dumps = db.execute("SELECT * FROM main.braindumps")
         db.execute('INSERT INTO main.braindumps VALUES (?, ?, ?)', safe)
         bot.factory.db.commit()
 
 commands.append(bdadd)
+
+def bdrm(bot, user, channel, msg):
+    if msg.startswith('+bd rm'):
+        # process input
+        date_str = msg.split(' ')[2]
+        date_obj = datetime.date(*map(int,date_str.split('-')))
+
+        # sanitize input
+        #date_s = (date,)
+        safe = (date_obj)
+
+        db = bot.factory.db.cursor()
+        #dumps = db.execute("SELECT * FROM main.braindumps")
+        db.execute('DELETE FROM main.braindumps WHERE date = ?', safe)
+        bot.factory.db.commit()
+
+commands.append(bdrm)
