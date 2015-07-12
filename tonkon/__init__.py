@@ -37,7 +37,7 @@ def bdadd(bot, user, channel, msg):
         # process input
         date = msg.split(' ')[2]
         dumper  = msg.split(' ')[3]
-        topic = " ".join(msg.split(' ')[3:])
+        topic = " ".join(msg.split(' ')[4:])
         bot.msg(channel, "Addding {0}, {1}, {2}".format(date, dumper, topic))
 
         # sanitize input
