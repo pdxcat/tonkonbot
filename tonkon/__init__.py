@@ -15,6 +15,11 @@ def name(bot, user, channel, msg):
         bot.msg(channel, out)
 commands.append(name)
 
+def source(bot, user, channel, msg):
+    if '+source' == msg:
+        out = "Source at https://github.com/nibalizer/tonkonbot"
+        bot.msg(channel, out)
+commands.append(source)
 
 
 def bdlist(bot, user, channel, msg):
