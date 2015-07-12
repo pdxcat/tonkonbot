@@ -1,0 +1,7 @@
+#rename to config.yaml
+---
+  network: 'chat.freenode.net'
+  port: 6667
+  channel: '#mything'
+  key: 'password'
+  db: 'example.db'
