@@ -18,11 +18,10 @@ commands.append(name)
 
 def source(bot, user, channel, msg):
     if '+source' == msg:
-        out = "Source at https://github.com/squidboylan/tonkonbot (originally written by n1bz)"
+        out = "Source at https://github.com/pdxcat/tonkonbot"
         bot.msg(channel, out)
 
 commands.append(source)
-
 
 def bdlist(bot, user, channel, msg):
     if '+bd list' == msg:
@@ -38,7 +37,7 @@ def bdlist(bot, user, channel, msg):
             curr[2] = int(curr[2])
             # Make sure the bd being displayed has not already passed
             if (curr[0] > today.year or (curr[0] == today.year and curr[1] > today.month) or (curr[0] == today.year and curr[1] == today.month and curr[2] >= today.day)) and count < 5 :
-                out = "{0} | {1} | {2}".format(row[0], row[1], row[2])
+                out = "{0} | {1}".format(row[0], row[1])
                 bot.msg(channel, out)
                 count = count + 1
 
@@ -53,18 +52,18 @@ def bdadd(bot, user, channel, msg):
         pattern = re.compile("^[0-9]{4}\-[0-9]{2}\-[0-9]{2}")
         if user == "relsqui" or user == "squid":
             if pattern.match(date):
-                dumper  = msg.split(' ')[3]
-                topic = " ".join(msg.split(' ')[4:])
-                bot.msg(channel, "Addding {0}, {1}, {2}".format(date, dumper, topic))
+                topic = " ".join(msg.split(' ')[3:])
+                #topic = " ".join(msg.split(' ')[4:])
+                bot.msg(channel, "Addding {0}, {1}".format(date, topic))
 
                 # sanitize input
 
                 #date_s = (date,)
-                safe = (date, dumper, topic)
+                safe = (date, topic)
 
                 db = bot.factory.db.cursor()
                 #dumps = db.execute("SELECT * FROM main.braindumps")
-                db.execute('INSERT INTO main.braindumps VALUES (?, ?, ?)', safe)
+                db.execute('INSERT INTO main.braindumps VALUES (?, ?)', safe)
                 bot.factory.db.commit()
             else:
                 bot.msg(channel, "please input date in a 'yyyy-mm-dd' format")

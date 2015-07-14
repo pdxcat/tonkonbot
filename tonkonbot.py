@@ -167,7 +167,7 @@ def init_db_or_pass(conn):
         return
     except sqlite3.OperationalError:
         c.execute('''CREATE TABLE braindumps
-                             (date text, topic text, dumper text)''')
+                             (date text, topic text)''')
 
     conn.commit()
     print c.execute("SELECT * FROM braindumps")
