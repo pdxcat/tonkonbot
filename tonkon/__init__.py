@@ -8,7 +8,6 @@ def command_handler(bot, user, channel, msg):
     for command in commands:
         command(bot, user, channel, msg)
 
-
 def name(bot, user, channel, msg):
     if msg.startswith(bot.nickname) and 'sup' in msg.lower():
         out = "Sup I'm a bot"
@@ -42,6 +41,23 @@ def bdlist(bot, user, channel, msg):
                 count = count + 1
 
 commands.append(bdlist)
+
+def bdlistone(bot, user, channel, msg):
+    pattern = re.compile("^\+bd [0-9]{4}\-[0-9]{2}\-[0-9]{2}")
+    if pattern.match(msg):
+
+        date = msg.split(' ')[1]
+
+        safe = (date,)
+
+        db = bot.factory.db.cursor()
+        #dumps = db.execute("SELECT * FROM main.braindumps")
+        db.execute('SELECT * from main.braindumps where date=(?)', safe)
+        dump = db.fetchone()
+        out = "{0} | {1}".format(dump[0], dump[1])
+        bot.msg(channel, out)
+
+commands.append(bdlistone)
 
 def bdadd(bot, user, channel, msg):
     if msg.startswith('+bd add'):
@@ -124,6 +140,6 @@ commands.append(bdrm)
 
 def bdhelp(bot, user, channel, msg):
     if msg.startswith('+bd help'):
-        bot.msg(channel, "This is a bot that keeps track of the braindump list, commands are \"+bd list\", \"+bd add\", \"+bd edit\", and \"+bd rm\" ")
+        bot.msg(channel, "This is a bot that keeps track of the braindump list, commands are \"+bd list\", \"+bd add\", \"+bd edit\", \"+bd $date\", and \"+bd rm\" ")
 
 commands.append(bdhelp)
