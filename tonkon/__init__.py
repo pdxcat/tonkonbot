@@ -1,5 +1,6 @@
 import datetime
 import re
+import requests
 
 commands = []
 
@@ -27,25 +28,20 @@ commands.append(source)
 # list 5 braindumps that have not already passsed
 def bdlist(bot, user, channel, msg):
     if '+bd list' == msg:
-        # get a list of braindumps from the database
-        db = bot.factory.db.cursor()
-        dumps = db.execute("SELECT * FROM main.braindumps ORDER BY date ASC")
-        today = datetime.date.today()
+        r = requests.get("http://web.cecs.pdx.edu/~finnre/braindumps")
+        next_bd = ""
+        for line in r.text.split('\n')[::-1]:
+            if '|' not in line:
+                continue
+            date = line.split('|')[0]
+            date_obj = datetime.datetime.strptime(date, "%Y-%m-%d ")
+            now = datetime.datetime.now()
+            if date_obj > now:
+                nextbd = line
+                break
 
-        # set a count to 0 so we can limit the number of bds we reply with to 5
-        count = 0
-        for row in dumps:
-            # split the date into 3 parts so it can be compared with today's date
-            curr = row[0].split('-')
-            curr[0] = int(curr[0])
-            curr[1] = int(curr[1])
-            curr[2] = int(curr[2])
+        bot.msg(channel, line.encode('ascii'))
 
-            # Make sure the bd being displayed has not already passed and only display 5
-            if (curr[0] > today.year or (curr[0] == today.year and curr[1] > today.month) or (curr[0] == today.year and curr[1] == today.month and curr[2] >= today.day)) and count < 5 :
-                out = "{0} | {1}".format(row[0], row[1])
-                bot.msg(channel, out)
-                count = count + 1
 
 commands.append(bdlist)
 
