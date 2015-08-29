@@ -36,7 +36,7 @@ def bdlist(bot, user, channel, msg):
             date = line.split('|')[0]
             date_obj = datetime.datetime.strptime(date, "%Y-%m-%d ")
             now = datetime.datetime.now()
-            if date_obj > now:
+            if date_obj.year >= now.year and date_obj.month >= now.month and date_obj.day >= now.day:
                 nextbd = line
                 break
 
