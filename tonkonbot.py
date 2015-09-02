@@ -80,7 +80,8 @@ class LogBot(irc.IRCClient):
 
     def signedOn(self):
         """Called when bot has succesfully signed on to server."""
-        self.join(self.factory.channel, self.factory.key)
+        for x in range(len(self.factory.channel)):
+            self.join(self.factory.channel[x], self.factory.key[x])
 
     def joined(self, channel):
         """This will get called when the bot joins the channel."""
@@ -89,7 +90,7 @@ class LogBot(irc.IRCClient):
     def privmsg(self, user, channel, msg):
         """This will get called when the bot receives a message."""
         user = user.split('!', 1)[0]
-        self.logger.log("<%s> %s" % (user, msg))
+        self.logger.log("%s <%s> %s" % (channel, user, msg))
 
         # Check to see if they're sending me a private message
         if channel == self.nickname:
@@ -103,7 +104,7 @@ class LogBot(irc.IRCClient):
     def action(self, user, channel, msg):
         """This will get called when the bot sees someone do an action."""
         user = user.split('!', 1)[0]
-        self.logger.log("* %s %s" % (user, msg))
+        self.logger.log("%s * %s %s" % (channel, user, msg))
 
     # irc callbacks
 
@@ -135,7 +136,7 @@ class LogBotFactory(protocol.ClientFactory):
         self.channel = channel
         self.key = key
         self.db = db
-        self.filename = "logs/{0}".format(channel)
+        self.filename = "logs"
 
     def buildProtocol(self, addr):
         p = LogBot()
@@ -156,11 +157,6 @@ def init_db_or_pass(conn):
     Attempt to validate if the database is set up, else create one
     """
     c = conn.cursor()
-    #c.execute('''CREATE TABLE stocks
-    #                     (date text, trans text, symbol text, qty real, price real)''')
-
-    # Insert a row of data
-    #c.execute("INSERT INTO stocks VALUES ('2006-01-05','BUY','RHAT',100,35.14)")
 
     # Save (commit) the changes
     try:
