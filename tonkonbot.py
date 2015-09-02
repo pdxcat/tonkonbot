@@ -61,6 +61,7 @@ class LogBot(irc.IRCClient):
     """A logging IRC bot."""
 
     nickname = 'tonkon'
+    lineRate = .7
 
     def connectionMade(self):
         irc.IRCClient.connectionMade(self)

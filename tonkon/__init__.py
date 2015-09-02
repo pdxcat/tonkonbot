@@ -27,9 +27,15 @@ commands.append(source)
 
 # list 5 braindumps that have not already passsed
 def bdlist(bot, user, channel, msg):
-    if msg.startswith("+bd list") or msg == "+bd":
+    if msg.startswith("+bd list") or msg.startswith("+bd"):
         r = requests.get("http://web.cecs.pdx.edu/~finnre/braindumps")
-        next_bd = ""
+        count = 0
+
+        if "-a" in msg:
+            max_bds = 5
+        else:
+            max_bds = 1
+
         for line in r.text.split('\n')[::-1]:
             if '|' not in line:
                 continue
@@ -37,11 +43,10 @@ def bdlist(bot, user, channel, msg):
             date_obj = datetime.datetime.strptime(date, "%Y-%m-%d ")
             now = datetime.datetime.now()
             if date_obj.year >= now.year and date_obj.month >= now.month and date_obj.day >= now.day:
-                nextbd = line
-                break
-
-        bot.msg(channel, line.encode('ascii'))
-
+                count += 1
+                bot.msg(channel, line.encode('ascii'))
+                if count == max_bds:
+                    break
 
 commands.append(bdlist)
 
