@@ -132,10 +132,9 @@ class LogBotFactory(protocol.ClientFactory):
     A new protocol instance will be created each time we connect to the server.
     """
 
-    def __init__(self, channel, key, db):
+    def __init__(self, channel, key):
         self.channel = channel
         self.key = key
-        self.db = db
         self.filename = "logs"
 
     def buildProtocol(self, addr):
@@ -152,24 +151,6 @@ class LogBotFactory(protocol.ClientFactory):
         reactor.stop()
 
 
-def init_db_or_pass(conn):
-    """
-    Attempt to validate if the database is set up, else create one
-    """
-    c = conn.cursor()
-
-    # Save (commit) the changes
-    try:
-        c.execute("SELECT * FROM braindumps")
-        return
-    except sqlite3.OperationalError:
-        c.execute('''CREATE TABLE braindumps
-                             (date text, topic text)''')
-
-    conn.commit()
-    print c.execute("SELECT * FROM braindumps")
-
-
 
 if __name__ == '__main__':
     # initialize logging
@@ -182,15 +163,8 @@ if __name__ == '__main__':
 
     print config['network']
 
-    # setup database
-
-    conn = sqlite3.connect(config['db'])
-    init_db_or_pass(conn)
-
-
-
     # create factory protocol and application
-    f = LogBotFactory(config['channel'], config['key'], db=conn)
+    f = LogBotFactory(config['channel'], config['key'])
 
     # connect factory to this host and port
     reactor.connectSSL(config['network'],config['port'], f, ssl.ClientContextFactory())
