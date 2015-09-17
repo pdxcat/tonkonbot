@@ -37,12 +37,14 @@ def bdlist(bot, user, channel, msg):
             max_bds = 1
 
         for line in r.text.split('\n')[::-1]:
-            if '|' not in line:
+            if '|' not in line or not re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}", line):
                 continue
             date = line.split('|')[0]
             date_obj = datetime.datetime.strptime(date, "%Y-%m-%d ")
             now = datetime.datetime.now()
-            if date_obj.year >= now.year and date_obj.month >= now.month and date_obj.day >= now.day:
+            if date_obj.year > now.year or (date_obj.year == now.year and
+                    date_obj.month > now.month) or (date_obj.year == now.year and
+                    date_obj.month == now.month and date_obj.day >= now.day):
                 count += 1
                 bot.msg(channel, line.encode('ascii'))
                 if count == max_bds:
