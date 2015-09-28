@@ -27,7 +27,7 @@ commands.append(source)
 
 # list 5 braindumps that have not already passsed
 def bdlist(bot, user, channel, msg):
-    if msg.startswith("+bd list") or msg.startswith("+bd"):
+    if re.match("^\+bd( list)?( -a)?$", msg):
         r = requests.get("http://web.cecs.pdx.edu/~finnre/braindumps")
         count = 0
 
@@ -52,9 +52,26 @@ def bdlist(bot, user, channel, msg):
 
 commands.append(bdlist)
 
+def bddate(bot, user, channel, msg):
+    if re.match("^\+bd [0-9]{4}-[0-9]{2}-[0-9]{2}$", msg):
+        r = requests.get("http://web.cecs.pdx.edu/~finnre/braindumps")
+
+        requested_date = msg.split(' ')[1]
+
+        for line in r.text.split('\n')[::-1]:
+            if '|' not in line or not re.match("^[0-9]{4}-[0-9]{2}-[0-9]{2}", line):
+                continue
+
+            date = line.split('|')[0].split(' ')[0]
+            if requested_date == date:
+                bot.msg(channel, line.encode('ascii'))
+                break
+
+commands.append(bddate)
+
 # Provide help if the user asks for it
 def bdhelp(bot, user, channel, msg):
     if msg.startswith('+bd help') or msg.startswith(bot.nickname + ": help") or msg.startswith(bot.nickname + " help"):
-        bot.msg(channel, "This is a bot that keeps track of the braindump list, commands are \"+bd list\", \"+bd add\", \"+bd edit\", \"+bd $date\", and \"+bd rm\" ")
+        bot.msg(channel, "This is a bot that keeps track of the braindump list, commands are \"+bd list\" and \"+bd $date\"")
 
 commands.append(bdhelp)
