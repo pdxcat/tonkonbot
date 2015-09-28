@@ -72,6 +72,6 @@ commands.append(bddate)
 # Provide help if the user asks for it
 def bdhelp(bot, user, channel, msg):
     if msg.startswith('+bd help') or msg.startswith(bot.nickname + ": help") or msg.startswith(bot.nickname + " help"):
-        bot.msg(channel, "This is a bot that keeps track of the braindump list, commands are \"+bd list\" and \"+bd $date\"")
+        bot.msg(channel, "This is a bot that keeps track of the braindump list, commands are \"+bd list [-a]\" and \"+bd $date\"")
 
 commands.append(bdhelp)
