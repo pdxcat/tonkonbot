@@ -19,7 +19,8 @@ commands.append(name)
 
 # if the bot's source is asked for reply with a link to the github repo
 def source(bot, user, channel, msg):
-    if '+source' == msg or msg.startswith(bot.nickname + ": source") or msg.startswith(bot.nickname + " source"):
+    if '+source' == msg or msg.startswith(bot.nickname + ": source") or\
+        msg.startswith(bot.nickname + " source") or '!source' == msg :
         out = "Source at https://github.com/pdxcat/tonkonbot"
         bot.msg(channel, out)
 
@@ -27,7 +28,7 @@ commands.append(source)
 
 # list 5 braindumps that have not already passsed
 def bdlist(bot, user, channel, msg):
-    if re.match("^\+bd( list)?( -a)?$", msg):
+    if re.match("^(\+)?!?bd( list)?( -a)?$", msg):
         r = requests.get("http://web.cecs.pdx.edu/~finnre/braindumps")
         count = 0
 
@@ -53,7 +54,7 @@ def bdlist(bot, user, channel, msg):
 commands.append(bdlist)
 
 def bddate(bot, user, channel, msg):
-    if re.match("^\+bd [0-9]{4}-[0-9]{2}-[0-9]{2}$", msg):
+    if re.match("^(\+)?!?bd [0-9]{4}-[0-9]{2}-[0-9]{2}$", msg):
         r = requests.get("http://web.cecs.pdx.edu/~finnre/braindumps")
 
         requested_date = msg.split(' ')[1]
@@ -71,7 +72,8 @@ commands.append(bddate)
 
 # Provide help if the user asks for it
 def bdhelp(bot, user, channel, msg):
-    if msg.startswith('+bd help') or msg.startswith(bot.nickname + ": help") or msg.startswith(bot.nickname + " help"):
+    if msg.startswith('+bd help') or msg.startswith(bot.nickname + ": help") or\
+        msg.startswith(bot.nickname + " help")  or msg.startswith('!bd help'):
         bot.msg(channel, "This is a bot that keeps track of the braindump list, commands are \"+bd list [-a]\" and \"+bd $date\"")
 
 commands.append(bdhelp)
