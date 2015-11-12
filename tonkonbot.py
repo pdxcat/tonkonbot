@@ -94,9 +94,7 @@ class LogBot(irc.IRCClient):
 
         # Check to see if they're sending me a private message
         if channel == self.nickname:
-            msg = "It isn't nice to whisper!  Play nice with the group."
-            self.msg(user, msg)
-            return
+            channel = user
 
         # Otherwise punt to the command handler
         tonkon.command_handler(self, user, channel, msg)
