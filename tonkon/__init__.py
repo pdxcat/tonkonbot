@@ -28,7 +28,7 @@ commands.append(source)
 
 # list 5 braindumps that have not already passsed
 def bdlist(bot, user, channel, msg):
-    if re.match("^(\+)?!?bd( list)?( -a)?$", msg):
+    if re.match("^(\+|!)bd( list)?( -a)?$", msg):
         r = requests.get("http://web.cecs.pdx.edu/~finnre/braindumps")
         count = 0
 
