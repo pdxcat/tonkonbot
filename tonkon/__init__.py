@@ -3,6 +3,7 @@ import re
 import requests
 
 commands = []
+bd_source = "http://web.cecs.pdx.edu/~mwilliam/braindumps"
 
 # Loop through all of the commands the bot has
 def command_handler(bot, user, channel, msg):
@@ -29,7 +30,7 @@ commands.append(source)
 # list 5 braindumps that have not already passsed
 def bdlist(bot, user, channel, msg):
     if re.match("^(\+|!)bd( list)?( -a)?$", msg):
-        r = requests.get("http://web.cecs.pdx.edu/~mwilliam/braindumps")
+        r = requests.get(bd_source)
         count = 0
 
         if "-a" in msg:
@@ -55,7 +56,7 @@ commands.append(bdlist)
 
 def bddate(bot, user, channel, msg):
     if re.match("^(\+)?!?bd [0-9]{4}-[0-9]{2}-[0-9]{2}$", msg):
-        r = requests.get("http://web.cecs.pdx.edu/~finnre/braindumps")
+        r = requests.get(bd_source)
 
         requested_date = msg.split(' ')[1]
 
