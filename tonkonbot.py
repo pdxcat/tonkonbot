@@ -83,6 +83,8 @@ class LogBot(irc.IRCClient):
         for x in range(len(self.factory.channel)):
             self.join(self.factory.channel[x], self.factory.key[x])
 
+        self.msg("nickserv", "IDENTIFY " + config["nick_pass"])
+
     def joined(self, channel):
         """This will get called when the bot joins the channel."""
         self.logger.log("[I have joined %s]" % channel)

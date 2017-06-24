@@ -8,3 +8,4 @@
   key: 
     - 'awesomepass'
     - 'pass2'
+  nick_pass: "pass to give to nickserv"
